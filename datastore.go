@@ -78,6 +78,8 @@ func (ds *Datastore) Get(ctx context.Context, key string) ([]byte, error) {
 }
 
 func (ds *Datastore) Put(ctx context.Context, key string, content []byte) error {
+	// Check if key already in datastore, if so, we do not need to do anything.
+	// In our system, key is a cid of the content, so each key will be always associated with the same content
 	has, err := ds.Has(ctx, key)
 	if err != nil {
 		return err
@@ -85,6 +87,8 @@ func (ds *Datastore) Put(ctx context.Context, key string, content []byte) error 
 	if has {
 		return nil
 	}
+
+	// If key not already present, add it
 	query := fmt.Sprintf("INSERT INTO %s (key, value) VALUES(?, ?)", ds.tableName)
 	_, err = ds.db.Exec(query, key, content)
 	if err != nil {
