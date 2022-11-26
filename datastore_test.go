@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func getDs() *Datastore {
+func getDatastore() *Datastore {
 	os.Mkdir("test", 0777)
 	os.Remove("test/testdb.db")
 	ds := NewDatastore("test/testdb.db", "keystore")
@@ -15,14 +15,14 @@ func getDs() *Datastore {
 	return ds
 }
 
-func clearDs(ds *Datastore) {
+func clearDatastore(ds *Datastore) {
 	ds.db.Close()
 	os.RemoveAll("test")
 }
 
-func TestDs(t *testing.T) {
-	ds := getDs()
-	defer clearDs(ds)
+func TestDatastore(t *testing.T) {
+	ds := getDatastore()
+	defer clearDatastore(ds)
 
 	key := "testkey"
 	value := []byte("testvalue")
