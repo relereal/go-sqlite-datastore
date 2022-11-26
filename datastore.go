@@ -54,6 +54,10 @@ func (ds *Datastore) Connect() {
 	ds.db = db
 }
 
+func (ds *Datastore) CloseDb() error {
+	return ds.db.Close()
+}
+
 func (ds *Datastore) Has(ctx context.Context, key string) (bool, error) {
 	query := fmt.Sprintf("SELECT key FROM %s WHERE key = ?", ds.tableName)
 	keys, err := ds.db.Query(query, key)
